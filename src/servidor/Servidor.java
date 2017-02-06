@@ -6,10 +6,12 @@
 package servidor;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.io.InputStreamReader;
-import java.io.OutputStream;
+
+import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.ServerSocket;
@@ -103,10 +105,10 @@ public class Servidor extends Thread{
             System.out.println("Conexion recibida");
             
             //Flujo de salida de datos dirección cliente
-            OutputStream os;
+            //OutputStream os;
             
-            os = newSocket.getOutputStream();
-            
+           // os = newSocket.getOutputStream();
+            BufferedWriter os = new BufferedWriter(new OutputStreamWriter(newSocket.getOutputStream()));
             
             //abrimos flujo de recogida de datos con cliente
             BufferedReader entrada = new BufferedReader(new InputStreamReader(newSocket.getInputStream()));
@@ -127,10 +129,10 @@ public class Servidor extends Thread{
             
             //calculamos el resultado llamando al método operación
             int resultado=operacion(num1,num2,sig);
-            
+            String ola=String.valueOf(resultado);
             //enviamos los datos al cliente
-            os.write(resultado);
-            
+            os.write(ola);
+            os.flush();
             System.out.println("Cerrando el nuevo socket");
             //cerramos el Scoket
             newSocket.close();
